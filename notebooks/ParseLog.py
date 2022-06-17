@@ -38,6 +38,7 @@ class ParseLog:
         """
         df = self.parse_log_to_raw_df()
 
+        # Смена название колонок у сырого df
         new_name_columns = [
             'TIMESTAMP',
             'CLID',
@@ -53,13 +54,21 @@ class ParseLog:
             'REG_NUMBER',
             'ROUTE_DESCR'
         ]
-
         new_name_columns = list(map(lambda x: x.lower(), new_name_columns))
-
         df.columns = new_name_columns
 
+        # Сортировка, чтобы убрать NULL-значения
         df = df[df.timestamp != '']
 
+        # Приведение UTC-даты к общему timestamp
         df.timestamp = df.timestamp.apply(lambda x: utc_to_str_date(x))
+        df.timestamp = pd.to_datetime(df.timestamp)
+
+        # Смена типов у значений
+        df.longitude = df.longitude.astype(float)
+        df.latitude = df.latitude.astype(float)
+        df.speed = df.speed.astype(float)
+        df.direction = df.direction.astype(int)
+        df.production = df.production.astype(int)
 
         return df
