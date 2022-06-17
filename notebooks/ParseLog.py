@@ -8,6 +8,7 @@ class ParseLog:
     
     def parse_log_to_raw_df(self):
         """
+        Принимает на вход путь к файлу в формате .log и преобразовывает в сырой pd.DataFrame
         """
         with open(self.path) as f:
             line_array = []
@@ -26,7 +27,7 @@ class ParseLog:
 
     def transform_df(self):
         """
-
+        Берёт сырой df из метода parse_log_to_raw_df() и преобразовывает в читаемый df
         """
         df = self.parse_log_to_raw_df()
 
