@@ -9,6 +9,7 @@ def utc_to_str_date(utc_date: str) -> str:
 
 class ParseLog:
     """
+    Основной класс для работы с файлами
     """
     def __init__(self,path_to_file):
         self.path = path_to_file
