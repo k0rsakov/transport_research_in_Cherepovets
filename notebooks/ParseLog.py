@@ -1,4 +1,11 @@
+from datetime import datetime
 import pandas as pd
+
+def utc_to_str_date(utc_date: str) -> str:
+    """
+    Принимает на вход строку в формате ddmmyyyy:hhmmss и возвращает строку в формате yyyy-hh-mm hh:mm:ss
+    """
+    return datetime.strptime(utc_date, '%d%m%Y:%H%M%S').strftime('%Y-%m-%d %H:%M:%S')
 
 class ParseLog:
     """
@@ -52,5 +59,7 @@ class ParseLog:
         df.columns = new_name_columns
 
         df = df[df.timestamp != '']
+
+        df.timestamp = df.timestamp.apply(lambda x: utc_to_str_date(x))
 
         return df
