@@ -2,3 +2,5 @@
 /notebooks/.ipynb_checkpoints/config-checkpoint.json
 /notebooks/log
 /notebooks/.ipynb_checkpoints/ParseLog-checkpoint.py
+/notebooks/db_parameters.py
+/notebooks/.ipynb_checkpoints/db_parameters-checkpoint.py
