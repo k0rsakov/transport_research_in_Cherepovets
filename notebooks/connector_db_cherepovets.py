@@ -12,12 +12,11 @@ class PostgreSQL:
                  database: str,
                  login: str,
                  password: str,
-                 df: pd.DataFrame):
+                 ):
         self.host = host
         self.db = database
         self.login = login
         self.password = password
-        self.df = df
 
     def authorization_pg(self):
         """
@@ -27,11 +26,14 @@ class PostgreSQL:
         engine = create_engine(engine_str)
         return engine
 
-    def into_pg_table(self,pg_table_name:str):
+    def into_pg_table(self,
+                      pg_table_name:str,
+                      df: pd.DataFrame,
+                      ):
         """
         Помещение данных в БД PostgreSQL
         """
-        dataframe = self.df
+        dataframe = df
         connector = self.authorization_pg()
         dataframe.to_sql(
             name=pg_table_name,
