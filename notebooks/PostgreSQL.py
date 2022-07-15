@@ -5,13 +5,20 @@ from db_parameters import *
 class PostgreSQL:
     """
     Класс для работы с БД PostgreSQL
+
+    Принимаемые параметры:
+        - `host` – хост базы данных в `str` формате, по умолчанию ='localhost'
+        - `database` – название базы данных в `str` формате, по умолчанию 'postgres'
+        - `login` – логин для авторизации в `str` формате, по умолчанию 'postgres'
+        - `password` – пароль для авторизации в `str` формате, по умолчанию 'postgres'
+        - `port` – порт базы данных в `int` формате, по умолчанию 5432
     """
     def __init__(self,
-                 host: str,
-                 database: str,
-                 login: str,
-                 password: str,
-                 port:int = 5432
+                 host: str = 'localhost',
+                 database: str = 'postgres',
+                 login: str = 'postgres',
+                 password: str = 'postgres',
+                 port: int = 5432
                  ):
         self.host = host
         self.db = database
@@ -25,6 +32,7 @@ class PostgreSQL:
         """
         engine_str = f'postgresql://{self.login}:{self.password}@{self.host}:{self.port}/{self.db}'
         engine = create_engine(engine_str)
+
         return engine
 
     def into_pg_table(self,
@@ -34,6 +42,14 @@ class PostgreSQL:
                       ) -> bool:
         """
         Помещение данных в БД PostgreSQL
+
+        Принимаемые атрибуты:
+            - `pg_table_name` – название таблицы для помещения в `str` формате
+            - `df` – pd.DataFrame для помещения в базу данных
+            - `schema` – название схемы для помещения в `str` формате, по умолчанию 'public'
+
+        Возвращает:
+            - True при успехе
         """
         try:
             dataframe = df
@@ -55,6 +71,12 @@ class PostgreSQL:
             query: str,) -> pd.DataFrame:
         """
         Метод для извлечения df из БД
+
+        Принимаемые атрибуты:
+            - `query` – SQL-запрос в `str` формате.
+
+        Возвращает:
+            - pd.DataFrame
         """
         try:
             return pd.read_sql(query, self.authorization_pg())
