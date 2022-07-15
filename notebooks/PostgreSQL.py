@@ -11,23 +11,26 @@ class PostgreSQL:
                  database: str,
                  login: str,
                  password: str,
+                 port:int = 5432
                  ):
         self.host = host
         self.db = database
         self.login = login
         self.password = password
+        self.port = port
 
     def authorization_pg(self):
         """
         Создание коннектора к БД PostgreSQL
         """
-        engine_str = f'postgresql://{self.login}:{self.password}@{self.host}:5432/{self.db}'
+        engine_str = f'postgresql://{self.login}:{self.password}@{self.host}:{self.port}/{self.db}'
         engine = create_engine(engine_str)
         return engine
 
     def into_pg_table(self,
                       pg_table_name: str,
                       df: pd.DataFrame,
+                      schema: str = 'public'
                       ) -> bool:
         """
         Помещение данных в БД PostgreSQL
@@ -37,6 +40,7 @@ class PostgreSQL:
             connector = self.authorization_pg()
             dataframe.to_sql(
                 name=pg_table_name,
+                schema=schema,
                 con=connector,
                 chunksize=10000,
                 index=False,
